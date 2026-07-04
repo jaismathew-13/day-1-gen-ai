@@ -1,0 +1,44 @@
+Change summary for day-1-gen-ai
+
+1. Added project support files:
+   - requirements.txt
+   - .gitignore
+   - .env.example
+   Why: to make the project reproducible, avoid committing temporary files, and document the required API key format.
+
+2. Created CI workflow:
+   - .github/workflows/python-app.yml
+   - workflow installs dependencies and checks syntax for code.py
+   Why: to automatically validate the project on push/pull request and catch errors before merging.
+
+3. Hardened environment handling in code.py:
+   - Added get_client() with GROQ_API_KEY environment validation
+   - Added explicit error message when GROQ_API_KEY is missing
+   Why: to fail early with a clear error instead of crashing later when the API key is missing.
+
+4. Updated Gradio app code for installed Gradio version:
+   - Replaced unsupported ChatInterface parameter `type="messages"`
+   - Added `chatbot=gr.Chatbot()` and `textbox=gr.Textbox(...)`
+   - Added `save_history=True`
+   Why: to make the UI compatible with the installed Gradio version and preserve chat history for the assistant.
+
+5. Added chat history normalization for Groq:
+   - Added normalize_history(history)
+   - Filters history to only include `role` and `content`
+   - Prevents unsupported fields like `metadata` from being sent to Groq
+   Why: to fix Groq API errors caused by Gradio including unsupported history metadata in the request payload.
+
+6. README improvements:
+   - Added setup and run instructions
+   - Added explanation of CI
+   - Documented environment variable usage and app launch
+   Why: to help users get started quickly and understand the required configuration and workflow.
+
+7. Verified code syntax:
+   - Successfully ran `python -m py_compile code.py`
+   Why: to ensure the updated Python code is syntactically valid before running the app.
+
+8. Verified app launch behavior:
+   - Confirmed Gradio local URL output
+   - Diagnosed and fixed invalid API key and message formatting issues
+   Why: to confirm the application starts correctly and that the main runtime issues were resolved.
